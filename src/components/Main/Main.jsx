@@ -5,19 +5,18 @@ export const Main = () => {
 
   const [books, setBooks] = useState([]);
   const [cart, setCart] = useState([]);
-  const [cartTotal, setCartTotal] = useState(0);
-  const [isCartModalOpen, setIsCartModalOpen] = useState(false);
+  const [cartModalOpen, setCartModalOpen] = useState(false);
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
 
 
 
   /*modal*/
   const openCartModal = () => {
-    setIsCartModalOpen(true);
+    setCartModalOpen(true);
   };
 
   const closeCartModal = () => {
-    setIsCartModalOpen(false);
+    setCartModalOpen(false);
   };
   /* cierre modal */
 
@@ -52,13 +51,14 @@ export const Main = () => {
     setCart([...cart, book]);
     setBooks((prevBooks) => {
       const updatedBooks = [...prevBooks];
-      const bookIndex = updatedBooks.findIndex((b) => b.id === book.id);
-      if (bookIndex !== -1) {
+      const bookIndex = updatedBooks.findIndex((b) => b.id == book.id);
+      if (bookIndex != -1) {
         updatedBooks[bookIndex].stock -= 1;
       }
       if (book.stock == 0) {
-        updatedBooks[bookIndex].stock = "prodcuto agotado"
+        updatedBooks[bookIndex].stock = "producto agotado"
       }
+      
       return updatedBooks;
     });
   }
@@ -80,9 +80,7 @@ export const Main = () => {
     removeFromCart(item);
   };
 
-  useEffect(() => {
-    setCartTotal(calculateCartTotal(cart));
-  }, [cart]);
+  
 
   return (
     <>
@@ -93,7 +91,7 @@ export const Main = () => {
 
         </div>
         {books.map((book) => (
-          <div className="bg-[#010326] border-4 rounded-xl border-[#020F59] flex mb-4 h-[280px] w-[50%] gap-2 p-2" key={book.id}>
+          <div className="bg-[#010326] border-4 rounded-xl border-[#020F59] flex justify-evenly mb-4 h-[280px] w-[30%] gap-2 p-2" key={book.id}>
             <div className="self-center">
               <img className="w-[150px]" src={book.image} alt={book.name} />
             </div>
@@ -110,7 +108,7 @@ export const Main = () => {
         ))}
 
         {/* modal */}
-        {isCartModalOpen && (
+        {cartModalOpen && (
           <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center ">
             <div className="bg-[#03178C] p-[5px] rounded-xl ">
               <button className='text-white font-bold p-1' onClick={closeCartModal}>Cerrar</button>
